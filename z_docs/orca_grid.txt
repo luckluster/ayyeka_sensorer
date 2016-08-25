@@ -1,0 +1,67 @@
+Orca_grid - documentation about our lovely grid component
+=========================================================
+
+* @author Trevize
+* @date 2014-05-14
+
+
+Deployment / installation
+-------------------------
+
+The grid needs the following:
+
+* Jewish Query 1.10.2 (or later, maybe)
+* Currently, the CSS of MetroNIC  (can be changed - depending on the view)
+* The following helper of CodeIgniter: form_helper
+* The following library of CodeIgniter: language
+* The following language functions (usually defined inside general_helper):  
+	l($lang_ke);  lang_r2($lang_key, $search_and_replace_array);  my_load_lang($lang_filename)
+	 
+
+
+Files
+-----
+
+It is built from several pieces:
+ * A library	- application/libraries/orca_grid/orca_grid.php 
+ * View	file	- application/views/common/orca_grid-view.php
+ * JS file		- assets/orca_grid/ocra_grid.js
+ * Lang file    - languages/english/orca_grid_langauge.php  (maybe we should add Hebrew too)
+ * CSS file 	- assets/orca_grid/ocra_grid.css (soon to exist?) 
+ * This file	- z_docs/orca_grid.txt
+
+
+Standard parameters which are expected to be passed by $_GET to the grid rendering function
+-------------------------------------------------------------------------------------------
+(In other words, what does Orca_grid::render_grid() can get in the $_get_params field)
+
+Note that all fields are defined as hidden input fields of class "orca_grid_var" inside the grid container DIV.
+Also - this is internal information - for use when debugging. Not to be typically used by the programmer using this grid
+
+
+'grid_name' - the name of the grid - mandatory
+'container_datacallback_params' - Parameters sent from the container function,
+	in order to be passed to the data callback. 
+	see orca_grid::get_grid_container() 
+'page' - what page I am at (default 0),
+'record_count' - number of records 
+'rpp' - records per page - or 'A' if all.
+'order_field' - identifier of the field we are ordering by. 
+'order_dir' -  our order direction: A or D (default A)
+'hide_filters' - 0 or 1. If 1, don't show the filters row, 
+	but instead show a TR with the button "Show filters"  (corresponds to the grid param: 'hide_filter_row_by_default') 
+'filters' - for maintaining the values of the filters 
+	JSON containing an object containing these values (every field is not mandatory)
+	[field_name] => object, containing one or several of these filter values
+		'value' => ...
+		'min' => 
+		'max' => ...
+
+
+Some other notes
+----------------
+
+Pagination:  
+Pages are represented as 0-based numbers (begining in 0) in the library, 
+even that they are shown to the user as 1-based numbers (begining in 1)
+so be aware of that. Make sure to convert them back and forth.

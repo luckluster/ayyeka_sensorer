@@ -1,0 +1,4 @@
+body{overflow-x:hidden}
+
+#logo{position:absolute;right:5px;top:5px;}
+#logo img{height:100px}
