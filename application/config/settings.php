@@ -26,7 +26,7 @@ $config['SETTINGS__default_language'] = 'english';
 
 // For encrypting the passwords
 // WARNING: changing this will render all existing accounts inaccessible!
-$config['SETTINGS__salt'] = "SwimX";
+$config['SETTINGS__salt'] = "";  // currently no salt...
 // yup
 $config['SETTINGS__min_password_length'] = 6;
 

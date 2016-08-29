@@ -145,7 +145,7 @@ class Orca_grid {
 		 			- if the key is null or empty string, then it is considered unselected and will not be filtered
 		 			- Also supports OPTGROUP - the 'value' can be another key-value array itself (so the key will be the label text) 
 		 		'default_value' => Default value for filter, in case no value is given by user
-		 			- current doesn't work for number_minmax and date_minmax
+		 			- currently doesn't work for number_minmax and date_minmax
 		 	)
 		 	'filters_control_column' =>  if true, then this column will have the "Apply filters" and "Reset filters" buttons, 
 		 		in the filters row. 

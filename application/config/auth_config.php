@@ -14,7 +14,7 @@
 */
 $config['AUTH__user_fields'] = array (
 	'id' 				=> 'usr_id',
-	'username' 			=> 'usr_username',
+	'username' 			=> 'usr_name',
 	'password' 			=> 'usr_password',   // may be hashed!
 	'type' 				=> 'usr_type',  
 	'status' 			=> 'usr_status',

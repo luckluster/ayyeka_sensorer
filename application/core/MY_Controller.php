@@ -83,9 +83,7 @@ class MY_Controller extends CI_Controller {
 		// And the params! They might be needed
 		$data['params'] = $params;
 		
-		if (arr_get_value($params, 'title')) {
-			$this->seo_settings["title"] = $params['title'];
-		}
+	
 
 		$return_html = arr_get_value($params, 'return_html');
 		

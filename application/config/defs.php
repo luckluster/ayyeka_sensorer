@@ -87,6 +87,27 @@ $config['GENDER_options'] = array (
 );
 
 
+/*
+|--------------------------------------------------------------------------
+| Grouping types
+|--------------------------------------------------------------------------
+| Used in the 'data_processed' table when saving different combinations of grouped data
+|
+*/
+
+  //GROUPING_TYPE__x - 1: year; 2: month; 3: day; 4: hour
+define ('GROUPING_TYPE__year', 1);
+define ('GROUPING_TYPE__month', 2);
+define ('GROUPING_TYPE__day', 3);
+define ('GROUPING_TYPE__hour', 4);
+
+// Lang mapping:
+$config['GROUPING_options'] = array (
+	GROUPING_TYPE__year		=> 'Year',
+	GROUPING_TYPE__month 	=> 'Month',
+	GROUPING_TYPE__day 		=> 'Day',
+	GROUPING_TYPE__hour 	=> 'Hour',
+);
 
 
 

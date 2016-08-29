@@ -23,9 +23,6 @@ Data we put in the session
 
 // Registration:
 
-// When the user clicks on "sign up via facebook/twitter"  - saves on which button he clicked.
-'reg__is_artist' => boolean
-
 // reg from facebook
 'reg__use_facebook' => true if reg has to take FB details
 'reg__fb_userinfo' =>  result of FB API call:  /me  (array)  
@@ -50,6 +47,7 @@ class Auth {
 		if (!$CI->input->is_cli_request()) {
 			session_start();
 		}
+		
 		$this->_user_fields = my_config_item('AUTH__user_fields');
 	}
 	
@@ -61,6 +59,8 @@ class Auth {
 	private function _init() {
 		if ($this->_is_initialized) return;
 		$CI =& get_instance();
+		
+		
 		
 		// In local server always work with usr_id=(constant)  
 		$user_id = get_constant('LMC_FAKE_LOGIN_ID');
@@ -124,7 +124,9 @@ class Auth {
 		
 		if (arr_get_value($params, 'password')) {
 			if ($user_info[ $this->_user_fields['password'] ] != password__crypt($params['password'])) {
+				
 				return $this->_ttlu_error_response(l('AUTH__invalid_password'));
+//				. "password in db: ".$user_info[ $this->_user_fields['password'] ]."; crypt: ".password__crypt($params['password']));
 			}
 		} elseif (arr_get_value($params, 'facebook_id')) {
 			// should always work!

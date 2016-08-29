@@ -66,13 +66,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Ayyeka Sensorer</a>
+          <a class="navbar-brand" href="<?=site_url()?>">Ayyeka Sensorer</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+			<!-- use 'class="active"' for marking currently active page -->
+			<?php if (get_user_id()) { ?>
+				<li><a href="<?=site_url()?>">Home</a></li>
+				<li><a href="<?=site_url("/reports")?>">Reports</a></li>
+				<li><a href="<?=site_url("/machines")?>">My machines</a></li>
+				<li><a href="<?=site_url("/input")?>">Data input</a></li>
+				<li><a href="<?=site_url("/main/logout")?>">Logout <?=get_user_prop('usr_name')?></a></li>
+			<?php } else { ?>
+				<li><a href="<?=site_url()?>">Login</a></li>
+			<?php } ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

@@ -43,10 +43,11 @@ class Users_model extends MY_Model {
 		FROM ".TBL_PREFIX."users AS user
 		
 		";
+		
 		if ($user_id) {
 			$sql .= "WHERE ".$this->get_index_name()."=$user_id ";
-		} elseif ($usr_username = arr_get_value($params, 'usr_username')) {
-			$sql .= "WHERE usr_username=".$this->db->escape($usr_username)." ";
+		} elseif (isset($params['usr_name'])) {
+			$sql .= "WHERE usr_name=".$this->db->escape($params['usr_name'])." ";
 		} elseif ($usr_email = arr_get_value($params, 'usr_email')) {
 			$sql .= "WHERE usr_email=".$this->db->escape($usr_email)." ";
 		} elseif ($usr_fb_id = arr_get_value($params, 'usr_fb_id')) {
@@ -88,7 +89,7 @@ class Users_model extends MY_Model {
 			if (arr_get_value($params, 'filters')) {
 				//my_print_r($sql);
 			}
-			
+			//my_print_r($sql);
 			return $this->generic_query($sql);
 		} else {
 			$sql = "SELECT COUNT(*) as record_count FROM ".$this->get_table_name()." ".$where_text;

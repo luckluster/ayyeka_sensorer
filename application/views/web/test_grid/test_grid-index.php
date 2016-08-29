@@ -8,7 +8,7 @@ tbody td.class-for-first-name {  color: blue; border-color: black; }
 </style>
 		
 			<!-- BEGIN PAGE CONTENT-->
-			<div class="row">
+			<div class="container">
 				
 				<div class="col-md-12">
 					<?=$orca_grid_container?>
