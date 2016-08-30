@@ -7,18 +7,26 @@ class Data_processed_model extends MY_Model {
 		parent::__construct();
 	}
 	
+	/**
+	 * Adds a value reported by a machine,
+	 * while updating all the current averages.
+	 * @param int $machine_id
+	 * @param string  $sql_time
+	 * @param float $value
+	 */
 	public function add_machine_value($machine_id, $sql_time, $value) {
 		// to maintain order!
 		$this->db->trans_start();
 		
 		$machine_id = (int)$machine_id;
 		$value = $this->db->escape($value);
-		// How to update the new value:
+		// How to update an existing value:
 		//for 2 values:   (old value + new_value) / 2
 		//for 3 values:   (old value*2  + new_value) /3
 		//for 4 values:   (old value*3  + new_value) /4 
 		// etc.
 		
+		// Loop all over the  grouping options (year, month etc) and save the value for each of those ways
 		foreach (my_config_item('GROUPING_options') as $grouping_option => $grouping_option_name) {
 			// get some information about the current value, if any
 			// yes it's a query in a loop which is not good, but used for the sake of simplicty
@@ -30,6 +38,8 @@ class Data_processed_model extends MY_Model {
 			WHERE dp_machine_id=$machine_id AND dp_grouping_type=$grouping_option AND  dp_grouping_value='$grouping_value'
 			";
 			$row = $this->generic_query($sql, false);
+			
+			// Is there already a value for this grouping option?
 			if ($row) {
 				$new_dp_values_count = $row['dp_values_count']+1;
 				$new_dp_value = ($row['dp_value']*$row['dp_values_count'] + $value)/$new_dp_values_count;
@@ -37,8 +47,6 @@ class Data_processed_model extends MY_Model {
 				$new_dp_values_count = 1;
 				$new_dp_value = $value;
 			}
-			
-			
 			
 			if ($row) {
 				$sql = "
@@ -64,14 +72,22 @@ class Data_processed_model extends MY_Model {
 	/**
 	 * Data callback for Orca_grid
 	 * @param array $params - standard options sent by orca_grid - see documentation in orca_grid class (section 'data_callback')
+		expects to have the following params:
+			'container_datacallback_params' => array('mcn_id', 'theperiod', 'sql_time_from', 'sql_time_until')
+			'extra_params' => array('usr_id')
 	 * @return array - of rows, or just a single item: 'record_count'
 	 */
 	public function get_procssed_data_for_grid($params) {
-		$where_text = "WHERE 1=1";
+		// initial WHERE clause
+		$where_text = "WHERE mcn_user_id=".$params['extra_params']['usr_id'];
+		
+		
 		if (arr_get_value($params, 'filters')) {
 			//my_print_r($params['filters']);
 			$where_text .= Orca_grid::get_sql_filter_text($params['filters'], true);
 		}
+		
+		// Handle filters sent from the UI
 		$more_params = arr_get_value($params, 'container_datacallback_params', array());  // sent from the controller itself through GET
 		if (arr_get_value($more_params, 'mcn_id')) {
 			$where_text .= " AND dp_machine_id=".(int)$more_params['mcn_id'];
@@ -102,7 +118,7 @@ class Data_processed_model extends MY_Model {
 			$sql  = "
 			SELECT dp.*, mcn.mcn_title, mcn.mcn_id
 			FROM ".$this->get_table_name()." AS dp
-			LEFT JOIN ".TBL_PREFIX."machines AS mcn ON mcn_id=dp_machine_id
+			JOIN ".TBL_PREFIX."machines AS mcn ON mcn_id=dp_machine_id
 			".$where_text;
 			
 			if ($order_field = arr_get_value($params, 'order_field')) {
@@ -117,7 +133,11 @@ class Data_processed_model extends MY_Model {
 			//my_print_r($sql);
 			return $this->generic_query($sql);
 		} else {
-			$sql = "SELECT COUNT(*) as record_count FROM ".$this->get_table_name()." ".$where_text;
+			$sql = "
+			SELECT COUNT(*) as record_count 
+			FROM ".$this->get_table_name()."
+			JOIN ".TBL_PREFIX."machines AS mcn ON mcn_id=dp_machine_id
+			".$where_text;
 			return $this->generic_query($sql, false);
 		}
 		

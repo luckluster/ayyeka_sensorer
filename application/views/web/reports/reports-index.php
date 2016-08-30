@@ -28,13 +28,13 @@ tbody td.class-for-first-name {  color: blue; border-color: black; }
 					  
 					  <div class="form-group">
 						<label for="sql_time_from">From</label>
-						<?=form_input(array('name' => 'sql_time_from', 'type' => 'text', 'class' => 'form-control', 'id' =>'sql_time_from', 'value' => $this->input->get('sql_time_from')))?>
+						<?=form_input(array('name' => 'sql_time_from', 'type' => 'text', 'class' => 'form-control jqDatePicker', 'id' =>'sql_time_from', 'value' => $this->input->get('sql_time_from')))?>
 						
 					  </div>
 					  <div class="form-group">
 						<label for="sql_time_until">Until</label>
 						
-						<?=form_input(array('name' => 'sql_time_until', 'type' => 'text', 'class' => 'form-control', 'id' =>'sql_time_until', 'value' => $this->input->get('sql_time_until')))?>
+						<?=form_input(array('name' => 'sql_time_until', 'type' => 'text', 'class' => 'form-control jqDatePicker', 'id' =>'sql_time_until', 'value' => $this->input->get('sql_time_until')))?>
 					  </div>
 					  
 					  <button type="submit" class="btn btn-default">Submit</button>			

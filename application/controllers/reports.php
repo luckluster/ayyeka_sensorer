@@ -104,6 +104,7 @@ class Reports extends MY_Controller {
 			
 			),
 			'data_callback' => array ($this->data_processed_model, 'get_procssed_data_for_grid'),
+			'data_callback_extra_params' => array ('usr_id' => get_user_id())
 			
 		);
 		

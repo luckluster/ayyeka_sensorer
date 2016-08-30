@@ -20,8 +20,8 @@
 			  </div>
 			  <div class="form-group">
 				<label for="sql_time">Timestamp</label>
-				<input name="sql_time" type="text" class="form-control" id="sql_time" placeholder="timestamp">
-				<p class="help-block">Leave empty for current time</p>
+				<input name="sql_time" type="text" class="form-control" id="sql_time" placeholder="Timestamp">
+				<p class="help-block">Use SQL timestamp. Leave empty for current time</p>
 			  </div>
 			  <button type="submit" class="btn btn-default">Submit</button>			
 
