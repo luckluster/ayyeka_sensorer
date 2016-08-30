@@ -19,3 +19,7 @@ How to deploy
 * Copy local_machine_config.sample.php to local_machine_config.php 
 * Define your DB credentials in local_machine_config.php
 
+
+Default login:
+-------------------
+Username: "yaron", password: "123"
