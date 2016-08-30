@@ -4,7 +4,7 @@
  * @author Trevize
  */
 
- 
+
  /**
   * Takes a timestamp and converts (simplifies) it to the grouping value, 
   * which is used in the 'dp_grouping_value' field in the data_processed table
@@ -16,7 +16,7 @@
 		case GROUPING_TYPE__year:
 			$grouping_value = date("Y", $ts);
 			break;
-		GROUPING_TYPE__month:
+		case GROUPING_TYPE__month:
 			$grouping_value = date("Y-m", $ts);
 			break;
 		case GROUPING_TYPE__day:
