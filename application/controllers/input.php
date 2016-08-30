@@ -32,7 +32,7 @@ class Input extends MY_Controller {
 		$this->load->model('data_raw_model');
 		$this->load->model('data_processed_model');
 		$this->load->model('machines_model');
-		print_r($_POST);
+		//print_r($_POST);
 		
 		// does the machine exist??
 		$machine_id = (int)$this->input->post('machine_id');

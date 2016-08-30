@@ -60,5 +60,69 @@ class Data_processed_model extends MY_Model {
 		// yes we're done!
 		$this->db->trans_complete();
 	}
+	
+	/**
+	 * Data callback for Orca_grid
+	 * @param array $params - standard options sent by orca_grid - see documentation in orca_grid class (section 'data_callback')
+	 * @return array - of rows, or just a single item: 'record_count'
+	 */
+	public function get_procssed_data_for_grid($params) {
+		$where_text = "WHERE 1=1";
+		if (arr_get_value($params, 'filters')) {
+			//my_print_r($params['filters']);
+			$where_text .= Orca_grid::get_sql_filter_text($params['filters'], true);
+		}
+		$more_params = arr_get_value($params, 'container_datacallback_params', array());  // sent from the controller itself through GET
+		if (arr_get_value($more_params, 'mcn_id')) {
+			$where_text .= " AND dp_machine_id=".(int)$more_params['mcn_id'];
+		}
+		if (arr_get_value($more_params, 'theperiod')) {
+			$where_text .= " AND dp_grouping_type=".(int)$more_params['theperiod'];
+			
+			if (arr_get_value($more_params, 'sql_time_from')) {
+				$val = convert_time_to_data_grouping_value( $more_params['sql_time_from'], $more_params['theperiod']);
+
+				$where_text .= " AND dp_grouping_value >= ".$this->db->escape($val);
+			}
+			if (arr_get_value($more_params, 'sql_time_until')) {
+				
+				if ($more_params['theperiod'] == GROUPING_TYPE__hour) {
+					$val = $more_params['sql_time_until']." 59";  // fix time problem. yup
+				} else {
+					$val = convert_time_to_data_grouping_value( $more_params['sql_time_until'], $more_params['theperiod'] );		  // normal behavior..
+				}
+					
+				$where_text .= " AND dp_grouping_value <= ".$this->db->escape($val);
+			}
+			
+		}
+		//print_r($where_text);
+		
+		if (!arr_get_value($params, 'count_records')) {
+			$sql  = "
+			SELECT dp.*, mcn.mcn_title, mcn.mcn_id
+			FROM ".$this->get_table_name()." AS dp
+			LEFT JOIN ".TBL_PREFIX."machines AS mcn ON mcn_id=dp_machine_id
+			".$where_text;
+			
+			if ($order_field = arr_get_value($params, 'order_field')) {
+				$sql .= " ORDER BY $order_field ".(arr_get_value($params, 'order_dir') == "A" ? "ASC" : "DESC"); 
+			}
+			
+			$sql .= get_limit_string(arr_get_value($params, 'limit'), arr_get_value($params, 'offset'));
+			
+			if (arr_get_value($params, 'filters')) {
+				//my_print_r($sql);
+			}
+			//my_print_r($sql);
+			return $this->generic_query($sql);
+		} else {
+			$sql = "SELECT COUNT(*) as record_count FROM ".$this->get_table_name()." ".$where_text;
+			return $this->generic_query($sql, false);
+		}
+		
+		
+	}
+	
 
 }

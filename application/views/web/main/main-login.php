@@ -1,36 +1,47 @@
 <div id='login'>
 <form method="POST">
 
+			<div class="panel panel-default">
+			  <div class="panel-body">
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-offset-5 col-md-3">
-				<div class="form-login">
-				<h4>Welcome back.</h4>
-				<?php if ($message) { ?>
-				<div class="alert alert-danger" role="alert"><?=$message?></div>
-				<? } ?>
+					<form method='get'>
+					
+						<?php if ($message) { ?>
+							<div class="alert alert-danger" role="alert"><?=$message?></div>
+						<? } ?>
+						
+
+						<div class="form-group">
+						<label for="userName">Username</label>
+							<?=form_input('username', $this->input->post('username', true), 'id="userName" class="form-control input-sm chat-input" placeholder="username"');?>
+						</div>
+
+
+						<div class="form-group">
+							<label for="userPassword">Password</label>
+							<?=form_password('password', $this->input->post('password', true), ' id="userPassword"  class="form-control" placeholder="password"');?>
+						</div>
 				
-				<?=form_input('username', $this->input->post('username', true), 'id="userName" class="form-control input-sm chat-input" placeholder="username"');?>
-				</br>
-				<?=form_password('password', $this->input->post('password', true), ' id="userPassword" class="form-control input-sm chat-input" placeholder="password"');?>
-				</br>
-				<div class="wrapper">
-				<span class="group-btn">     
-					<input type='submit' class="btn btn-primary btn-md" name='login' value='login'>
-				</span>
-				</div>
-				</div>
-			
+						<input type='submit' class="btn btn-primary btn-default btn-md" name='login' value='login'>						
+
+					</form>
+								
+				
+			  </div>
+			  
+
+				
 			</div>
-		</div>
-	</div>
+
+
 
 </form>
 </div>
 
 
 <?
+
+// old 2
 
 // old
 /*
